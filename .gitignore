@@ -14,3 +14,7 @@ __pycache__/
 # OS files
 .DS_Store
 
+# Large local data files
+data/raw/*.duckdb
+data/signals/*.csv
+docs/data_reports/*.md

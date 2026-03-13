@@ -1,0 +1,87 @@
+# Development Log
+
+## 2026-03-13 — Stage 1 completed: local offline research pipeline
+
+Today I completed the first full offline quantitative research pipeline for the project.
+
+### What was done
+
+1. Confirmed and integrated the local market database
+   - Located a usable DuckDB database file: `market.duckdb`
+   - Moved it into the project under `data/raw/`
+
+2. Built the data service layer
+   - Implemented `read_daily_data()` to load data from DuckDB
+   - Implemented `clean_data()` for:
+     - date standardization
+     - column renaming
+     - type conversion
+     - sorting
+     - deduplication
+     - basic anomaly filtering
+
+3. Built the data audit workflow
+   - Implemented `audit_data()`
+   - Checked:
+     - dataset size
+     - stock coverage
+     - date range
+     - missing value ratio
+     - suspension proxy (`volume = 0`)
+     - OHLC consistency
+     - turnover / volume sanity
+     - price / volume / turnover distributions
+   - Automatically saved report to `docs/data_reports/`
+
+4. Built the feature engineering layer
+   - Implemented `build_features()`
+   - First version features:
+     - `return_1d`
+     - `ma_5`
+     - `ma_20`
+     - `return_20d`
+     - `volatility_20`
+     - `volume_ratio_5`
+
+5. Built the signal generation layer
+   - Implemented `generate_signals()`
+   - First version rule:
+     - `close > ma_20`
+     - `return_20d > 0`
+     - `volume_ratio_5 > 1.2`
+
+6. Exported offline research result
+   - Saved full signal output to:
+     - `data/signals/signals.csv`
+
+### Key results
+
+- Total rows: 1,235,307
+- Number of stocks: 5,011
+- Date range: 2025-01-09 to 2026-01-23
+- Missing value ratio: 0 across all core columns
+- OHLC consistency checks all passed
+- Total generated signals: 145,280
+
+### What this stage achieved
+
+This stage established the first complete local offline research loop:
+
+DuckDB raw data
+→ data cleaning
+→ data audit
+→ feature engineering
+→ signal generation
+→ CSV output
+
+This means the project is no longer only a code skeleton.
+It is now a runnable offline quantitative research system.
+
+### Notes
+
+- The current signal logic is only a first baseline, not a final trading strategy.
+- The next stage should focus on:
+  - refining the rule logic
+  - adding latest-day snapshots
+  - evaluating signal quality
+  - building backtest / validation workflow
