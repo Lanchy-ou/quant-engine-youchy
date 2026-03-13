@@ -31,7 +31,7 @@ def main():
     signals[
         [
             "symbol",
-            "date",
+            "trade_date",
             "close",
             "ma_20",
             "return_20d",
@@ -50,7 +50,7 @@ def main():
         signals[
             [
                 "symbol",
-                "date",
+                "trade_date",
                 "close",
                 "ma_20",
                 "return_20d",

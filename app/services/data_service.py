@@ -29,7 +29,6 @@ def clean_data(df):
 
     df=df.rename(columns={
         "ts_code":"symbol",
-        "trade_date":"date",
         "vol":"volume",
         "amount":"turnover",
     })
@@ -37,9 +36,9 @@ def clean_data(df):
     numeric_cols=["open","high","low","close","volume","turnover"]
     df[numeric_cols]=df[numeric_cols].astype(float)
 
-    df=df.sort_values(["symbol","date"])
+    df=df.sort_values(["symbol","trade_date"])
 
-    df=df.drop_duplicates(subset=["symbol","date"])
+    df=df.drop_duplicates(subset=["symbol","trade_date"])
 
     df=df.dropna()
 
@@ -60,8 +59,8 @@ def audit_data(df, save_report=True):
     lines.append("## Dataset size")
     n_rows = len(df)
     n_stocks = df["symbol"].nunique()
-    date_min = df["date"].min()
-    date_max = df["date"].max()
+    date_min = df["trade_date"].min()
+    date_max = df["trade_date"].max()
     avg_days = df.groupby("symbol").size().mean()
 
     lines.append(f"Total rows: {n_rows}")
