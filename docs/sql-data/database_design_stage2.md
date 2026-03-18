@@ -3,14 +3,12 @@
 ## Table: prices_daily
 
 One row represents:
-- one stock
-- on one trade date
-- one daily OHLCV market record
+A single stock's daily market record on one trade date.
 
 Primary key:
-- (symbol, trade_date)
+(symbol, trade_date)
 
-Candidate columns:
+Columns:
 - symbol
 - trade_date
 - open
